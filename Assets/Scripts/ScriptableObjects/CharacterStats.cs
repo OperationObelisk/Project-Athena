@@ -97,6 +97,7 @@ public class SkillData
     }
 
     public int skillID; //Unique Identifier Value for skill
+
     public string skillName;
 
     [TextArea]
@@ -113,38 +114,87 @@ public class SkillData
 [System.Serializable]
 public class SkillTree
 {
+    #region Buffer Calculation Variables
+
+    private SkillData _bufferSkill = null;
+
+    #endregion Buffer Calculation Variables
+
+    private List<SkillData> availableSkillList = null;
     public List<SkillData> skillTree;
 
     public bool CheckIfAvailable(SkillData skillNode)
     {
+        if (skillNode.unlocked)
+        {
+            return false;
+        }
         if (skillNode.skillPrerequisites.Count == 0)
         {
             return true;
         }
-        int j = 0;
-        for (int i = 0; i < skillTree.Count; i++)
+        for (int i = 0; i < skillNode.skillPrerequisites.Count; i++)
         {
-            if (skillTree[i].skillID == skillNode.skillPrerequisites[j])
+            for (int j = 0; j < skillTree.Count; j++)
             {
-                if (!skillTree[i].unlocked)
+                if (skillNode.skillPrerequisites[i] == skillTree[j].skillID)
                 {
-                    return false;
+                    if (!skillTree[j].unlocked)
+                        return false;
                 }
-                j++;
             }
         }
         return true;
     }
 
-    public void ActivateSkill(int level, SkillData skill)
+    public void ActivateSkill(int level, int skillID)
     {
-        if (level == 0 || skill == null)
+        _bufferSkill = GetSkillData(skillID);
+
+        if (level == 0 || _bufferSkill == null)
         {
             return;
         }
-        if (level >= skill.minimumLevel && CheckIfAvailable(skill))
+        if (level >= _bufferSkill.minimumLevel && CheckIfAvailable(_bufferSkill) && !_bufferSkill.unlocked)
         {
-            skill.unlocked = true;
+            _bufferSkill.unlocked = true;
+        }
+        else if (level < _bufferSkill.minimumLevel)
+        {
+            Debug.LogError("Minimum Level Not Achieved");
+        }
+    }
+
+    public SkillData GetSkillData(int id)
+    {
+        _bufferSkill = null;
+        foreach (SkillData data in skillTree)
+        {
+            if (data.skillID == id)
+            {
+                _bufferSkill = data;
+                break;
+            }
+        }
+        return _bufferSkill;
+    }
+
+    public List<SkillData> GetAvailableSkillsList()
+    {
+        availableSkillList.Clear();
+        foreach (SkillData data in skillTree)
+        {
+            if (!data.unlocked && CheckIfAvailable(data))
+                availableSkillList.Add(data);
+        }
+        return availableSkillList;
+    }
+
+    public void ClearUnlockData()
+    {
+        foreach (SkillData data in skillTree)
+        {
+            data.unlocked = false;
         }
     }
 }

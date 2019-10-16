@@ -17,122 +17,113 @@ MonoBehaviour:
     damage: 0
     endurance: 0
     experience: 0
-    level: 0
+    level: 40
   skillTree:
     skillTree:
     - skillID: 0
-      skillName: 
-      skillDescription: 
+      skillName: Health 1
+      skillDescription: Increases Health by 20%
       minimumLevel: 1
       skillPrerequisites: 
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
+    - skillID: 1
+      skillName: Damage 1
+      skillDescription: Increases Damage by 5%
       minimumLevel: 1
       skillPrerequisites: 
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
+    - skillID: 2
+      skillName: Endurance 1
+      skillDescription: Increases Endurance by 2%
       minimumLevel: 1
       skillPrerequisites: 
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
-      minimumLevel: 1
-      skillPrerequisites: 
+    - skillID: 3
+      skillName: Health 2
+      skillDescription: Increases Health by 25%
+      minimumLevel: 10
+      skillPrerequisites: 00000000
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
-      minimumLevel: 1
-      skillPrerequisites: 
+    - skillID: 4
+      skillName: Fight 1
+      skillDescription: Gain a new Power Attack Move
+      minimumLevel: 10
+      skillPrerequisites: 0000000001000000
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
-      minimumLevel: 1
-      skillPrerequisites: 
+    - skillID: 5
+      skillName: Counter 1
+      skillDescription: Gain a new Dodge Counter Move
+      minimumLevel: 10
+      skillPrerequisites: 0100000002000000
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
-      minimumLevel: 1
-      skillPrerequisites: 
+    - skillID: 6
+      skillName: Endurance 2
+      skillDescription: Increases Endurance by 3%
+      minimumLevel: 15
+      skillPrerequisites: 02000000
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
-      minimumLevel: 1
-      skillPrerequisites: 
+    - skillID: 7
+      skillName: Health 3
+      skillDescription: Increases Health by 35%
+      minimumLevel: 20
+      skillPrerequisites: 0300000004000000
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
-      minimumLevel: 1
-      skillPrerequisites: 
+    - skillID: 8
+      skillName: Damage 2
+      skillDescription: Increases Damage by 10%
+      minimumLevel: 20
+      skillPrerequisites: 0100000004000000
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
-      minimumLevel: 1
-      skillPrerequisites: 
+    - skillID: 9
+      skillName: Damage 3
+      skillDescription: Increases Damage by 12%
+      minimumLevel: 25
+      skillPrerequisites: 08000000
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
-      minimumLevel: 1
-      skillPrerequisites: 
+    - skillID: 10
+      skillName: Counter 2
+      skillDescription: Unlock a new Dodge Move
+      minimumLevel: 25
+      skillPrerequisites: 050000000600000008000000
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
       multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
-      minimumLevel: 1
-      skillPrerequisites: 
-      unlocked: 0
-      skillType: 0
-      passiveStatMultiplier: 0
-      multiplierValue: 0
-    - skillID: 0
-      skillName: 
-      skillDescription: 
-      minimumLevel: 1
-      skillPrerequisites: 
+    - skillID: 11
+      skillName: Endurance 3
+      skillDescription: Increases Endurance by 5%
+      minimumLevel: 30
+      skillPrerequisites: 06000000
       unlocked: 0
       skillType: 0
       passiveStatMultiplier: 0
