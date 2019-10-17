@@ -11,7 +11,6 @@ public class Character : MonoBehaviour
     [SerializeField]
     private List<SkillButton> skillButtons = null;
 
-    [SerializeField]
     private List<SkillData> availableSkills = null;
 
     [SerializeField]
@@ -28,12 +27,13 @@ public class Character : MonoBehaviour
 
     public void UnlockSkill(int skillID)
     {
-        charStats.skillTree.ActivateSkill(charStats.stats.AlterExperienceValue(), skillID);
+        charStats.UnlockSkill(skillID);
         for (int i = 0; i < skillButtons.Count; i++)
         {
             if (skillButtons[i].skillID == skillID)
             {
                 skillButtons[i].buttonImageComponent.color = Color.green;
+                skillButtons[i].buttonComponent.interactable = false;
                 break;
             }
         }
@@ -49,8 +49,16 @@ public class Character : MonoBehaviour
             {
                 if (availableSkills[i].skillID == skillButtons[j].skillID)
                 {
-                    skillButtons[j].buttonImageComponent.color = Color.yellow;
-                    skillButtons[j].buttonComponent.interactable = true;
+                    if (availableSkills[i].minimumLevel > charStats.stats.AlterExperienceValue())
+                    {
+                        skillButtons[j].buttonImageComponent.color = Color.cyan;
+                        skillButtons[j].buttonComponent.interactable = false;
+                    }
+                    else if (availableSkills[i].minimumLevel <= charStats.stats.AlterExperienceValue())
+                    {
+                        skillButtons[j].buttonImageComponent.color = Color.yellow;
+                        skillButtons[j].buttonComponent.interactable = true;
+                    }
                     break;
                 }
             }

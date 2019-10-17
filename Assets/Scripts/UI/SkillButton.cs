@@ -13,7 +13,7 @@ public class SkillButton : MonoBehaviour
 
     public int skillID = 0;
 
-    private void Start()
+    private void Awake()
     {
         buttonComponent = GetComponent<Button>();
         buttonImageComponent = GetComponent<Image>();

@@ -78,6 +78,14 @@ public class Stats
 }
 
 [System.Serializable]
+public struct Abilities
+{
+    public bool Counter1;
+    public bool Counter2;
+    public bool Fight1;
+}
+
+[System.Serializable]
 public class SkillData
 {
     [System.Serializable]
@@ -87,13 +95,16 @@ public class SkillData
         Ability = 1,
     }
 
-    [SerializeField]
-    public enum PassiveStatModifier
+    [System.Serializable]
+    public enum StatAndAbilitiesModifier
     {
-        Ability = 0,
+        None = 0,
         Health = 1,
         Damage = 2,
         Endurance = 3,
+        Counter1 = 4,
+        Counter2 = 5,
+        Fight1 = 6,
     }
 
     public int skillID; //Unique Identifier Value for skill
@@ -107,8 +118,8 @@ public class SkillData
     public List<int> skillPrerequisites; //List of unique Skill IDs which need to be unlocked before unlocking current skill
     public bool unlocked = false;
     public SkillType skillType;
-    public PassiveStatModifier passiveStatMultiplier;
-    public float multiplierValue;
+    public StatAndAbilitiesModifier modifier;
+    public float additivePercentage;
 }
 
 [System.Serializable]
@@ -117,11 +128,37 @@ public class SkillTree
     #region Buffer Calculation Variables
 
     private SkillData _bufferSkill = null;
+    private List<SkillData> availableSkillList = null;
 
     #endregion Buffer Calculation Variables
 
-    private List<SkillData> availableSkillList = null;
     public List<SkillData> skillTree;
+
+    public void ActivateSkill(int level, int skillID)
+    {
+        _bufferSkill = GetSkillData(skillID);
+
+        if (level == 0 || _bufferSkill == null)
+        {
+            return;
+        }
+        if (level >= _bufferSkill.minimumLevel && CheckIfAvailable(_bufferSkill) && !_bufferSkill.unlocked)
+        {
+            _bufferSkill.unlocked = true;
+        }
+        else if (level < _bufferSkill.minimumLevel)
+        {
+            Debug.LogError("Minimum Level Not Achieved");
+        }
+    }
+
+    public void ClearUnlockData()
+    {
+        foreach (SkillData data in skillTree)
+        {
+            data.unlocked = false;
+        }
+    }
 
     public bool CheckIfAvailable(SkillData skillNode)
     {
@@ -145,24 +182,6 @@ public class SkillTree
             }
         }
         return true;
-    }
-
-    public void ActivateSkill(int level, int skillID)
-    {
-        _bufferSkill = GetSkillData(skillID);
-
-        if (level == 0 || _bufferSkill == null)
-        {
-            return;
-        }
-        if (level >= _bufferSkill.minimumLevel && CheckIfAvailable(_bufferSkill) && !_bufferSkill.unlocked)
-        {
-            _bufferSkill.unlocked = true;
-        }
-        else if (level < _bufferSkill.minimumLevel)
-        {
-            Debug.LogError("Minimum Level Not Achieved");
-        }
     }
 
     public SkillData GetSkillData(int id)
@@ -189,14 +208,6 @@ public class SkillTree
         }
         return availableSkillList;
     }
-
-    public void ClearUnlockData()
-    {
-        foreach (SkillData data in skillTree)
-        {
-            data.unlocked = false;
-        }
-    }
 }
 
 #endregion Declarations and Definitions
@@ -208,5 +219,57 @@ public class CharacterStats : ScriptableObject
     public Stats stats;
 
     [SerializeField]
+    public Abilities abilities;
+
+    [SerializeField]
     public SkillTree skillTree;
+
+    public void UnlockSkill(int skillID)
+    {
+        skillTree.ActivateSkill(stats.AlterExperienceValue(), skillID);
+        SkillData data = skillTree.GetSkillData(skillID);
+        float value;
+        switch (data.skillType)
+        {
+            case SkillData.SkillType.Passive:
+                switch (data.modifier)
+                {
+                    case SkillData.StatAndAbilitiesModifier.Health:
+                        value = stats.AlterHealthValue();
+                        value = (value * (data.additivePercentage / 100));
+                        stats.AlterHealthValue(value);
+                        break;
+
+                    case SkillData.StatAndAbilitiesModifier.Damage:
+                        value = stats.AlterDamageValue();
+                        value = (value * (data.additivePercentage / 100));
+                        stats.AlterDamageValue(value);
+                        break;
+
+                    case SkillData.StatAndAbilitiesModifier.Endurance:
+                        value = stats.AlterEnduranceValue();
+                        value = (value * (data.additivePercentage / 100));
+                        stats.AlterEnduranceValue(value);
+                        break;
+                }
+                break;
+
+            case SkillData.SkillType.Ability:
+                switch (data.modifier)
+                {
+                    case SkillData.StatAndAbilitiesModifier.Counter1:
+                        abilities.Counter1 = true;
+                        break;
+
+                    case SkillData.StatAndAbilitiesModifier.Counter2:
+                        abilities.Counter2 = true;
+                        break;
+
+                    case SkillData.StatAndAbilitiesModifier.Fight1:
+                        abilities.Fight1 = true;
+                        break;
+                }
+                break;
+        }
+    }
 }
