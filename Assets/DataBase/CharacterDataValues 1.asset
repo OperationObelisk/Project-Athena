@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5ea2eb181279ff4c91eb79bdaf6cbdb, type: 3}
-  m_Name: New Character Stats Data
+  m_Name: CharacterDataValues 1
   m_EditorClassIdentifier: 
-  stats:
-    health: 100
-    damage: 5
-    endurance: 3
-    experience: 0
-    level: 10
   abilities:
-    Counter1: 0
-    Counter2: 0
-    Fight1: 0
+  - abilityID: 0
+    abilityName: 
+    abilityUnlock: 0
+  - abilityID: 0
+    abilityName: 
+    abilityUnlock: 0
+  - abilityID: 0
+    abilityName: 
+    abilityUnlock: 0
   skillTree:
     skillTree:
     - skillID: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
       skillDescription: Increases Health by 20%
       minimumLevel: 1
       skillPrerequisites: 
-      unlocked: 1
+      unlocked: 0
       skillType: 0
       modifier: 1
       additivePercentage: 20
@@ -38,7 +38,7 @@ MonoBehaviour:
       skillDescription: Increases Damage by 5%
       minimumLevel: 1
       skillPrerequisites: 
-      unlocked: 1
+      unlocked: 0
       skillType: 0
       modifier: 2
       additivePercentage: 5
@@ -47,7 +47,7 @@ MonoBehaviour:
       skillDescription: Increases Endurance by 2%
       minimumLevel: 1
       skillPrerequisites: 
-      unlocked: 1
+      unlocked: 0
       skillType: 0
       modifier: 3
       additivePercentage: 8
@@ -56,7 +56,7 @@ MonoBehaviour:
       skillDescription: Increases Health by 25%
       minimumLevel: 10
       skillPrerequisites: 00000000
-      unlocked: 1
+      unlocked: 0
       skillType: 0
       modifier: 1
       additivePercentage: 25
@@ -65,7 +65,7 @@ MonoBehaviour:
       skillDescription: Gain a new Power Attack Move
       minimumLevel: 10
       skillPrerequisites: 0000000001000000
-      unlocked: 1
+      unlocked: 0
       skillType: 1
       modifier: 6
       additivePercentage: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
       skillDescription: Gain a new Dodge Counter Move
       minimumLevel: 10
       skillPrerequisites: 0100000002000000
-      unlocked: 1
+      unlocked: 0
       skillType: 1
       modifier: 4
       additivePercentage: 0

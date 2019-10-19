@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Character : MonoBehaviour
 {
-    [Expandable]
-    public CharacterStats charStats;
+    public CharacterData charStats;
 
     [SerializeField]
     private List<SkillButton> skillButtons = null;
@@ -22,6 +19,7 @@ public class Character : MonoBehaviour
         {
             charStats.skillTree.ClearUnlockData();
         }
+        Debug.Log(charStats.stats.AlterHealthValue());
         DisplayAvailableSkills();
     }
 

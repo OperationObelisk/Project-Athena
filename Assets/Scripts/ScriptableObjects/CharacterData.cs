@@ -9,19 +9,10 @@ public class Stats
 {
     #region Actual Stats
 
-    [SerializeField]
     private float health = 0.0f;
-
-    [SerializeField]
     private float damage = 0.0f;
-
-    [SerializeField]
     private float endurance = 0.0f;
-
-    [SerializeField]
     private int experience = 0;
-
-    [SerializeField]
     private int level = 1;
 
     #endregion Actual Stats
@@ -30,7 +21,7 @@ public class Stats
 
     private int _ExpBase = 10;
     private int _ExpLeft = 10;
-    private float _ExpMod = 1.11f;
+    private float _ExpMod = 1.25f;
     private float _t = 0.0f;
 
     #endregion Buffer Calculation Variables
@@ -58,31 +49,81 @@ public class Stats
         return endurance;
     }
 
-    public int AlterExperienceValue(int value = 0)
+    public int AlterExperienceValue(int value = 0, bool resetValue = false, bool modifyLevelValue = false, int levelValue = 0, int experienceValue = 0)
     {
-        if (value != 0)
+        if (resetValue == true)
         {
-            experience += value;
-            if (experience >= _ExpLeft)
+            level = 1;
+            experience = 0;
+            _ExpBase = 10;
+            _ExpLeft = 10;
+            _ExpMod = 1.25f;
+            _t = 0.0f;
+        }
+        else if (modifyLevelValue == true)
+        {
+            level = levelValue;
+            experience = experienceValue;
+        }
+        else
+        {
+            if (value != 0)
             {
-                experience -= _ExpLeft;
-                level++;
-                _t = Mathf.Pow(_ExpMod, level);
-                _ExpLeft = Mathf.FloorToInt(_ExpBase * _t);
+                experience += value;
+                if (experience >= _ExpLeft)
+                {
+                    experience -= _ExpLeft;
+                    level++;
+                    _t = Mathf.Pow(_ExpMod, level);
+                    _ExpLeft = Mathf.FloorToInt(_ExpBase * _t);
+                }
             }
         }
         return level;
+    }
+
+    public int GetExperienceValue()
+    {
+        return experience;
     }
 
     #endregion Public Methods
 }
 
 [System.Serializable]
-public struct Abilities
+public class Ability
 {
-    public bool Counter1;
-    public bool Counter2;
-    public bool Fight1;
+    private int ID;
+    private string Name;
+    private bool Unlocked;
+
+#if UNITY_EDITOR
+    public int abilityID;
+    public string abilityName;
+    public bool abilityUnlock;
+
+    public void EditorSetAbilityData()
+    {
+        ID = abilityID;
+        Name = abilityName;
+        Unlocked = abilityUnlock;
+    }
+
+#endif
+
+    public void GetAbilityData(out int id, out string name, out bool unlock)
+    {
+        id = ID;
+        name = Name;
+        unlock = Unlocked;
+    }
+
+    public void SetAbilityData(int id, string name, bool unlock)
+    {
+        ID = id;
+        Name = name;
+        Unlocked = unlock;
+    }
 }
 
 [System.Serializable]
@@ -96,19 +137,23 @@ public class SkillData
     }
 
     [System.Serializable]
-    public enum StatAndAbilitiesModifier
+    public enum StatModificationCategory
     {
         None = 0,
         Health = 1,
         Damage = 2,
         Endurance = 3,
-        Counter1 = 4,
-        Counter2 = 5,
-        Fight1 = 6,
+    }
+
+    [System.Serializable]
+    public enum AbilityToBeUnlocked
+    {
+        Counter1 = 0,
+        Counter2 = 1,
+        Fight1 = 2,
     }
 
     public int skillID; //Unique Identifier Value for skill
-
     public string skillName;
 
     [TextArea]
@@ -118,7 +163,8 @@ public class SkillData
     public List<int> skillPrerequisites; //List of unique Skill IDs which need to be unlocked before unlocking current skill
     public bool unlocked = false;
     public SkillType skillType;
-    public StatAndAbilitiesModifier modifier;
+    public StatModificationCategory statModificationCategory;
+    public AbilityToBeUnlocked abilityToBeUnlocked;
     public float additivePercentage;
 }
 
@@ -145,10 +191,6 @@ public class SkillTree
         if (level >= _bufferSkill.minimumLevel && CheckIfAvailable(_bufferSkill) && !_bufferSkill.unlocked)
         {
             _bufferSkill.unlocked = true;
-        }
-        else if (level < _bufferSkill.minimumLevel)
-        {
-            Debug.LogError("Minimum Level Not Achieved");
         }
     }
 
@@ -212,14 +254,14 @@ public class SkillTree
 
 #endregion Declarations and Definitions
 
-[CreateAssetMenu(fileName = "New Character Stats Data", menuName = "ScriptableObjects/CharacterStatsData")]
-public class CharacterStats : ScriptableObject
+[CreateAssetMenu(fileName = "Character Data Values", menuName = "ScriptableObjects/CharacterDataValues")]
+public class CharacterData : ScriptableObject
 {
     [SerializeField]
     public Stats stats;
 
     [SerializeField]
-    public Abilities abilities;
+    public List<Ability> abilities;
 
     [SerializeField]
     public SkillTree skillTree;
@@ -232,41 +274,24 @@ public class CharacterStats : ScriptableObject
         switch (data.skillType)
         {
             case SkillData.SkillType.Passive:
-                switch (data.modifier)
+                switch (data.statModificationCategory)
                 {
-                    case SkillData.StatAndAbilitiesModifier.Health:
+                    case SkillData.StatModificationCategory.Health:
                         value = stats.AlterHealthValue();
                         value = (value * (data.additivePercentage / 100));
                         stats.AlterHealthValue(value);
                         break;
 
-                    case SkillData.StatAndAbilitiesModifier.Damage:
+                    case SkillData.StatModificationCategory.Damage:
                         value = stats.AlterDamageValue();
                         value = (value * (data.additivePercentage / 100));
                         stats.AlterDamageValue(value);
                         break;
 
-                    case SkillData.StatAndAbilitiesModifier.Endurance:
+                    case SkillData.StatModificationCategory.Endurance:
                         value = stats.AlterEnduranceValue();
                         value = (value * (data.additivePercentage / 100));
                         stats.AlterEnduranceValue(value);
-                        break;
-                }
-                break;
-
-            case SkillData.SkillType.Ability:
-                switch (data.modifier)
-                {
-                    case SkillData.StatAndAbilitiesModifier.Counter1:
-                        abilities.Counter1 = true;
-                        break;
-
-                    case SkillData.StatAndAbilitiesModifier.Counter2:
-                        abilities.Counter2 = true;
-                        break;
-
-                    case SkillData.StatAndAbilitiesModifier.Fight1:
-                        abilities.Fight1 = true;
                         break;
                 }
                 break;
