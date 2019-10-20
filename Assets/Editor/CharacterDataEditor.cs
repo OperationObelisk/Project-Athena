@@ -279,7 +279,12 @@ public class CharacterDataEditor : Editor
                 EditorGUILayout.LabelField(_buffer.skillTree[i].skillName, GUILayout.MaxWidth(100), GUILayout.MaxHeight(20));
                 if (_buffer.skillTree[i].skillPrerequisites != null)
                     for (int j = 0; j < _buffer.skillTree[i].skillPrerequisites.Count; j++)
-                        EditorGUILayout.LabelField(_buffer.skillTree[i].skillPrerequisites[j].ToString(), GUILayout.MaxWidth(10), GUILayout.MaxHeight(20));
+                        if (GUILayout.Button(_buffer.skillTree[i].skillPrerequisites[j].ToString(), GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
+                        {
+                            SkillData data = _buffer.GetSkillData(_buffer.skillTree[i].skillPrerequisites[j]);
+                            selectedSkillTreeIndex = _buffer.skillTree.IndexOf(data);
+                        }
+                //EditorGUILayout.LabelField(_buffer.skillTree[i].skillPrerequisites[j].ToString(), GUILayout.MaxWidth(10), GUILayout.MaxHeight(20));
             }
             EditorGUILayout.EndHorizontal();
         }
