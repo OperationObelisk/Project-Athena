@@ -159,9 +159,9 @@ public class SkillData
     [TextArea]
     public string skillDescription;
 
+    public bool unlocked = false;
     public int minimumLevel = 1;
     public List<int> skillPrerequisites; //List of unique Skill IDs which need to be unlocked before unlocking current skill
-    public bool unlocked = false;
     public SkillType skillType;
     public StatModificationCategory statModificationCategory;
     public AbilityToBeUnlocked abilityToBeUnlocked;

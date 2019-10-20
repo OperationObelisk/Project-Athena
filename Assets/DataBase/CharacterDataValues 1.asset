@@ -27,108 +27,120 @@ MonoBehaviour:
     - skillID: 0
       skillName: Health 1
       skillDescription: Increases Health by 20%
+      unlocked: 0
       minimumLevel: 1
       skillPrerequisites: 
-      unlocked: 0
       skillType: 0
-      modifier: 1
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 20
     - skillID: 1
       skillName: Damage 1
       skillDescription: Increases Damage by 5%
+      unlocked: 0
       minimumLevel: 1
       skillPrerequisites: 
-      unlocked: 0
       skillType: 0
-      modifier: 2
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 5
     - skillID: 2
       skillName: Endurance 1
       skillDescription: Increases Endurance by 2%
+      unlocked: 0
       minimumLevel: 1
       skillPrerequisites: 
-      unlocked: 0
       skillType: 0
-      modifier: 3
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 8
     - skillID: 3
       skillName: Health 2
       skillDescription: Increases Health by 25%
+      unlocked: 0
       minimumLevel: 10
       skillPrerequisites: 00000000
-      unlocked: 0
       skillType: 0
-      modifier: 1
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 25
     - skillID: 4
       skillName: Fight 1
       skillDescription: Gain a new Power Attack Move
+      unlocked: 0
       minimumLevel: 10
       skillPrerequisites: 0000000001000000
-      unlocked: 0
       skillType: 1
-      modifier: 6
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 0
     - skillID: 5
       skillName: Counter 1
       skillDescription: Gain a new Dodge Counter Move
+      unlocked: 0
       minimumLevel: 10
       skillPrerequisites: 0100000002000000
-      unlocked: 0
       skillType: 1
-      modifier: 4
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 0
     - skillID: 6
       skillName: Endurance 2
       skillDescription: Increases Endurance by 3%
+      unlocked: 0
       minimumLevel: 15
       skillPrerequisites: 02000000
-      unlocked: 0
       skillType: 0
-      modifier: 3
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 3
     - skillID: 7
       skillName: Health 3
       skillDescription: Increases Health by 35%
+      unlocked: 0
       minimumLevel: 20
       skillPrerequisites: 0300000004000000
-      unlocked: 0
       skillType: 0
-      modifier: 1
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 35
     - skillID: 8
       skillName: Damage 2
       skillDescription: Increases Damage by 10%
+      unlocked: 0
       minimumLevel: 20
       skillPrerequisites: 0100000004000000
-      unlocked: 0
       skillType: 0
-      modifier: 2
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 10
     - skillID: 9
       skillName: Damage 3
       skillDescription: Increases Damage by 12%
+      unlocked: 0
       minimumLevel: 25
       skillPrerequisites: 08000000
-      unlocked: 0
       skillType: 0
-      modifier: 2
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 12
     - skillID: 10
       skillName: Counter 2
       skillDescription: Unlock a new Dodge Move
-      minimumLevel: 25
-      skillPrerequisites: 050000000600000008000000
       unlocked: 0
+      minimumLevel: 25
+      skillPrerequisites: 060000000800000005000000
       skillType: 1
-      modifier: 5
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 0
     - skillID: 11
       skillName: Endurance 3
       skillDescription: Increases Endurance by 5%
+      unlocked: 0
       minimumLevel: 30
       skillPrerequisites: 06000000
-      unlocked: 0
       skillType: 0
-      modifier: 3
+      statModificationCategory: 0
+      abilityToBeUnlocked: 0
       additivePercentage: 5
