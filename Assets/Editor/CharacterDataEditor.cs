@@ -122,19 +122,19 @@ public class CharacterDataEditor : Editor
         switch (stat)
         {
             case "HEALTH":
-                healthAlterValue = EditorGUILayout.IntField(healthAlterValue, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
+                healthAlterValue = EditorGUILayout.IntField(healthAlterValue, GUILayout.MaxWidth(40), GUILayout.MaxHeight(20));
                 break;
 
             case "DAMAGE":
-                damageAlterValue = EditorGUILayout.IntField(damageAlterValue, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
+                damageAlterValue = EditorGUILayout.IntField(damageAlterValue, GUILayout.MaxWidth(40), GUILayout.MaxHeight(20));
                 break;
 
             case "ENDURANCE":
-                enduranceAlterValue = EditorGUILayout.IntField(enduranceAlterValue, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
+                enduranceAlterValue = EditorGUILayout.IntField(enduranceAlterValue, GUILayout.MaxWidth(40), GUILayout.MaxHeight(20));
                 break;
 
             case "EXPERIENCE":
-                experienceAlterValue = EditorGUILayout.IntField(experienceAlterValue, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
+                experienceAlterValue = EditorGUILayout.IntField(experienceAlterValue, GUILayout.MaxWidth(40), GUILayout.MaxHeight(20));
                 break;
         }
         EditorGUILayout.EndHorizontal();
@@ -146,20 +146,26 @@ public class CharacterDataEditor : Editor
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("ID", GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
         EditorGUILayout.LabelField("NAME", GUILayout.MaxWidth(80), GUILayout.MaxHeight(20));
-        EditorGUILayout.LabelField("IS UNLOCKED", GUILayout.MaxWidth(80), GUILayout.MaxHeight(20));
+        EditorGUILayout.LabelField("UNLOCKED", GUILayout.MaxWidth(80), GUILayout.MaxHeight(20));
+        EditorGUILayout.LabelField("OPERATORS", GUILayout.MaxWidth(80), GUILayout.MaxHeight(20));
         EditorGUILayout.EndHorizontal();
+        int id = 0;
+        string name = "";
+        bool unlocked = false;
         for (int i = 0; i < script.abilities.Count; i++)
         {
+            script.abilities[i].GetAbilityData(out id, out name, out unlocked);
             EditorGUILayout.BeginHorizontal();
             script.abilities[i].abilityID = EditorGUILayout.IntField(script.abilities[i].abilityID, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
             script.abilities[i].abilityName = EditorGUILayout.TextField(script.abilities[i].abilityName, GUILayout.MaxWidth(80), GUILayout.MaxHeight(20));
-            EditorGUILayout.LabelField("", GUILayout.MaxWidth(40), GUILayout.MaxHeight(20));
-            script.abilities[i].abilityUnlock = EditorGUILayout.Toggle(script.abilities[i].abilityUnlock, GUILayout.MaxWidth(40), GUILayout.MaxHeight(20));
+            EditorGUILayout.LabelField("", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
+            EditorGUILayout.LabelField(unlocked.ToString(), GUILayout.MaxWidth(60), GUILayout.MaxHeight(20));
+            script.abilities[i].abilityUnlock = EditorGUILayout.Toggle(script.abilities[i].abilityUnlock, GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
             if (GUILayout.Button("✔", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
                 script.abilities[i].EditorSetAbilityData();
+
             if (GUILayout.Button("-", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
                 script.abilities.Remove(script.abilities[i]);
-
             EditorGUILayout.EndHorizontal();
         }
         if (GUILayout.Button("Add New Ability"))
@@ -233,6 +239,7 @@ public class CharacterDataEditor : Editor
 
             case SkillData.SkillType.Ability:
                 script.skillTree.skillTree[selectedSkillTreeIndex].abilityToBeUnlocked = (SkillData.AbilityToBeUnlocked)EditorGUILayout.EnumPopup("Ability to be unlocked", script.skillTree.skillTree[selectedSkillTreeIndex].abilityToBeUnlocked);
+                script.skillTree.skillTree[selectedSkillTreeIndex].abilityID = EditorGUILayout.IntField("Ability ID", script.skillTree.skillTree[selectedSkillTreeIndex].abilityID);
                 break;
         }
     }

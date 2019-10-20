@@ -166,6 +166,7 @@ public class SkillData
     public StatModificationCategory statModificationCategory;
     public AbilityToBeUnlocked abilityToBeUnlocked;
     public float additivePercentage;
+    public int abilityID;
 }
 
 [System.Serializable]
@@ -293,6 +294,19 @@ public class CharacterData : ScriptableObject
                         value = (value * (data.additivePercentage / 100));
                         stats.AlterEnduranceValue(value);
                         break;
+                }
+                break;
+
+            case SkillData.SkillType.Ability:
+                Debug.Log("Ability Unlocked");
+                int _id;
+                string _name;
+                bool _unlocked;
+                for (int i = 0; i < abilities.Count; i++)
+                {
+                    abilities[i].GetAbilityData(out _id, out _name, out _unlocked);
+                    if (_id == data.abilityID)
+                        abilities[i].SetAbilityData(_id, _name, true);
                 }
                 break;
         }

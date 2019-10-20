@@ -19,7 +19,6 @@ public class Character : MonoBehaviour
         {
             charStats.skillTree.ClearUnlockData();
         }
-        Debug.Log(charStats.stats.AlterHealthValue());
         DisplayAvailableSkills();
     }
 
