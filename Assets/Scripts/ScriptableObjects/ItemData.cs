@@ -38,7 +38,7 @@ public enum PotionType
 
 #endregion Declarations and Definitions
 
-[CreateAssetMenu(fileName = "New Item", menuName = "ScriptableObjects/ItemDataValues")]
+[CreateAssetMenu(fileName = "New ItemData", menuName = "ScriptableObjects/ItemData")]
 public class ItemData : ScriptableObject
 {
     public int itemID = 0;

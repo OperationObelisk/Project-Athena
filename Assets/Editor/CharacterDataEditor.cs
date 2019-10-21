@@ -15,7 +15,7 @@ public class CharacterDataEditor : Editor
     private int enduranceAlterValue = 0;
     private int experienceAlterValue = 0;
 
-    private int selectedSkillTreeIndex = 5;
+    private int selectedSkillTreeIndex = 0;
 
     public override void OnInspectorGUI()
     {
@@ -26,6 +26,8 @@ public class CharacterDataEditor : Editor
         };
         EditorStyles.textField.alignment = TextAnchor.MiddleLeft;
         EditorStyles.label.alignment = TextAnchor.MiddleLeft;
+        if (GUILayout.Button("SAVE DATA"))
+            SaveData();
         EditorFunctionCollections.DrawLine();
         StatsVisualHandler();
         EditorFunctionCollections.DrawLine();
@@ -149,27 +151,29 @@ public class CharacterDataEditor : Editor
         EditorGUILayout.LabelField("UNLOCKED", GUILayout.MaxWidth(80), GUILayout.MaxHeight(20));
         EditorGUILayout.LabelField("OPERATORS", GUILayout.MaxWidth(80), GUILayout.MaxHeight(20));
         EditorGUILayout.EndHorizontal();
-        int id = 0;
-        string name = "";
-        bool unlocked = false;
-        for (int i = 0; i < script.abilities.Count; i++)
+        if (script.abilities != null)
         {
-            script.abilities[i].GetAbilityData(out id, out name, out unlocked);
-            EditorGUILayout.BeginHorizontal();
-            script.abilities[i].abilityID = EditorGUILayout.IntField(script.abilities[i].abilityID, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
-            script.abilities[i].abilityName = EditorGUILayout.TextField(script.abilities[i].abilityName, GUILayout.MaxWidth(80), GUILayout.MaxHeight(20));
-            EditorGUILayout.LabelField("", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
-            EditorGUILayout.LabelField(unlocked.ToString(), GUILayout.MaxWidth(60), GUILayout.MaxHeight(20));
-            script.abilities[i].abilityUnlock = EditorGUILayout.Toggle(script.abilities[i].abilityUnlock, GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
-            if (GUILayout.Button("✔", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
-                script.abilities[i].EditorSetAbilityData();
+            for (int i = 0; i < script.abilities.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                script.abilities[i].abilityID = EditorGUILayout.IntField(script.abilities[i].abilityID, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
+                script.abilities[i].abilityName = EditorGUILayout.TextField(script.abilities[i].abilityName, GUILayout.MaxWidth(80), GUILayout.MaxHeight(20));
+                EditorGUILayout.LabelField("", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
+                EditorGUILayout.LabelField(script.abilities[i].abilityUnlock.ToString(), GUILayout.MaxWidth(60), GUILayout.MaxHeight(20));
+                script.abilities[i].abilityUnlock = EditorGUILayout.Toggle(script.abilities[i].abilityUnlock, GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
+                if (GUILayout.Button("✔", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
+                    script.abilities[i].EditorSetAbilityData();
 
-            if (GUILayout.Button("-", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
-                script.abilities.Remove(script.abilities[i]);
-            EditorGUILayout.EndHorizontal();
+                if (GUILayout.Button("-", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
+                    script.abilities.Remove(script.abilities[i]);
+                EditorGUILayout.EndHorizontal();
+            }
         }
         if (GUILayout.Button("Add New Ability"))
+        {
             script.abilities.Add(new Ability());
+            Repaint();
+        }
     }
 
     private void SkillTreeVisualHandler()
@@ -183,64 +187,68 @@ public class CharacterDataEditor : Editor
 
     private void SkillDataParser()
     {
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("<b><size=10>Skill Data Parser</size></b>", richTextStyle, GUILayout.MaxWidth(100));
-        selectedSkillTreeIndex = EditorGUILayout.IntSlider(selectedSkillTreeIndex, 0, script.skillTree.skillTree.Count - 1);
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Skill ID:", GUILayout.MaxWidth(45), GUILayout.MaxHeight(20));
-        script.skillTree.skillTree[selectedSkillTreeIndex].skillID = EditorGUILayout.IntField(script.skillTree.skillTree[selectedSkillTreeIndex].skillID, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
-        EditorGUILayout.LabelField("", GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
-        EditorGUILayout.LabelField("Skill Name:", GUILayout.MaxWidth(65), GUILayout.MaxHeight(20));
-        script.skillTree.skillTree[selectedSkillTreeIndex].skillName = EditorGUILayout.TextField(script.skillTree.skillTree[selectedSkillTreeIndex].skillName, GUILayout.MaxWidth(100), GUILayout.MaxHeight(20));
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.LabelField("Skill Description:-");
-        EditorStyles.textArea.wordWrap = true;
-        script.skillTree.skillTree[selectedSkillTreeIndex].skillDescription = EditorGUILayout.TextArea(script.skillTree.skillTree[selectedSkillTreeIndex].skillDescription, EditorStyles.textArea, GUILayout.MaxHeight(45));
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Is Skill Unlocked:", GUILayout.MaxWidth(95), GUILayout.MaxHeight(20));
-        script.skillTree.skillTree[selectedSkillTreeIndex].unlocked = EditorGUILayout.Toggle(script.skillTree.skillTree[selectedSkillTreeIndex].unlocked, GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
-        EditorGUILayout.EndHorizontal();
-        EditorFunctionCollections.DrawLine(true);
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Minimum Level Required:", GUILayout.MaxWidth(140), GUILayout.MaxHeight(20));
-        script.skillTree.skillTree[selectedSkillTreeIndex].minimumLevel = EditorGUILayout.IntField(script.skillTree.skillTree[selectedSkillTreeIndex].minimumLevel, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.LabelField("Pre-requisite Skill IDs for unlocking:-");
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("ID", GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
-        EditorGUILayout.LabelField("", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
-        EditorGUILayout.LabelField("SKILL NAME", GUILayout.MaxWidth(100), GUILayout.MaxHeight(20));
-        EditorGUILayout.EndHorizontal();
-        if (script.skillTree.skillTree != null && script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites != null)
+        if (script.skillTree.skillTree != null && script.skillTree.skillTree.Count > 0)
         {
-            for (int i = 0; i < script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites.Count; i++)
-            {
-                EditorGUILayout.BeginHorizontal();
-                script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites[i] = EditorGUILayout.IntField(script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites[i], GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
-                string skillName = script.skillTree.GetSkillData(script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites[i]).skillName;
-                EditorGUILayout.LabelField("", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
-                EditorGUILayout.LabelField(skillName, GUILayout.MaxWidth(100), GUILayout.MaxHeight(20));
-                if (GUILayout.Button("-", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
-                    script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites.Remove(script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites[i]);
-                EditorGUILayout.EndHorizontal();
-            }
-        }
-        if (GUILayout.Button("Add New Pre-requisite"))
-            script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites.Add(new int());
-        EditorFunctionCollections.DrawLine(true);
-        script.skillTree.skillTree[selectedSkillTreeIndex].skillType = (SkillData.SkillType)EditorGUILayout.EnumPopup("Skill Type:", script.skillTree.skillTree[selectedSkillTreeIndex].skillType);
-        switch (script.skillTree.skillTree[selectedSkillTreeIndex].skillType)
-        {
-            case SkillData.SkillType.Passive:
-                script.skillTree.skillTree[selectedSkillTreeIndex].statModificationCategory = (SkillData.StatModificationCategory)EditorGUILayout.EnumPopup("Stat to be modified", script.skillTree.skillTree[selectedSkillTreeIndex].statModificationCategory);
-                script.skillTree.skillTree[selectedSkillTreeIndex].additivePercentage = EditorGUILayout.FloatField("Percentage to be added", script.skillTree.skillTree[selectedSkillTreeIndex].additivePercentage);
-                break;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("<b><size=10>Skill Data Parser</size></b>", richTextStyle, GUILayout.MaxWidth(100));
+            selectedSkillTreeIndex = EditorGUILayout.IntSlider(selectedSkillTreeIndex, 0, script.skillTree.skillTree.Count - 1);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Skill ID:", GUILayout.MaxWidth(45), GUILayout.MaxHeight(20));
+            script.skillTree.skillTree[selectedSkillTreeIndex].skillID = EditorGUILayout.IntField(script.skillTree.skillTree[selectedSkillTreeIndex].skillID, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
+            EditorGUILayout.LabelField("", GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
+            EditorGUILayout.LabelField("Skill Name:", GUILayout.MaxWidth(65), GUILayout.MaxHeight(20));
+            script.skillTree.skillTree[selectedSkillTreeIndex].skillName = EditorGUILayout.TextField(script.skillTree.skillTree[selectedSkillTreeIndex].skillName, GUILayout.MaxWidth(100), GUILayout.MaxHeight(20));
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.LabelField("Skill Description:-");
+            EditorStyles.textArea.wordWrap = true;
+            script.skillTree.skillTree[selectedSkillTreeIndex].skillDescription = EditorGUILayout.TextArea(script.skillTree.skillTree[selectedSkillTreeIndex].skillDescription, EditorStyles.textArea, GUILayout.MaxHeight(45));
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Is Skill Unlocked:", GUILayout.MaxWidth(95), GUILayout.MaxHeight(20));
+            script.skillTree.skillTree[selectedSkillTreeIndex].unlocked = EditorGUILayout.Toggle(script.skillTree.skillTree[selectedSkillTreeIndex].unlocked, GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
+            EditorGUILayout.EndHorizontal();
+            EditorFunctionCollections.DrawLine(true);
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Minimum Level Required:", GUILayout.MaxWidth(140), GUILayout.MaxHeight(20));
+            script.skillTree.skillTree[selectedSkillTreeIndex].minimumLevel = EditorGUILayout.IntField(script.skillTree.skillTree[selectedSkillTreeIndex].minimumLevel, GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.LabelField("Pre-requisite Skill IDs for unlocking:-");
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("ID", GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
+            EditorGUILayout.LabelField("", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
+            EditorGUILayout.LabelField("SKILL NAME", GUILayout.MaxWidth(100), GUILayout.MaxHeight(20));
+            EditorGUILayout.EndHorizontal();
 
-            case SkillData.SkillType.Ability:
-                script.skillTree.skillTree[selectedSkillTreeIndex].abilityToBeUnlocked = (SkillData.AbilityToBeUnlocked)EditorGUILayout.EnumPopup("Ability to be unlocked", script.skillTree.skillTree[selectedSkillTreeIndex].abilityToBeUnlocked);
-                script.skillTree.skillTree[selectedSkillTreeIndex].abilityID = EditorGUILayout.IntField("Ability ID", script.skillTree.skillTree[selectedSkillTreeIndex].abilityID);
-                break;
+            if (script.skillTree.skillTree != null && script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites != null)
+            {
+                for (int i = 0; i < script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites.Count; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites[i] = EditorGUILayout.IntField(script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites[i], GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
+                    string skillName = script.skillTree.GetSkillData(script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites[i]).skillName;
+                    EditorGUILayout.LabelField("", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
+                    EditorGUILayout.LabelField(skillName, GUILayout.MaxWidth(100), GUILayout.MaxHeight(20));
+                    if (GUILayout.Button("-", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
+                        script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites.Remove(script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites[i]);
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
+            if (GUILayout.Button("Add New Pre-requisite"))
+                script.skillTree.skillTree[selectedSkillTreeIndex].skillPrerequisites.Add(new int());
+            EditorFunctionCollections.DrawLine(true);
+            if (script.skillTree.skillTree != null)
+                script.skillTree.skillTree[selectedSkillTreeIndex].skillType = (SkillData.SkillType)EditorGUILayout.EnumPopup("Skill Type:", script.skillTree.skillTree[selectedSkillTreeIndex].skillType);
+            switch (script.skillTree.skillTree[selectedSkillTreeIndex].skillType)
+            {
+                case SkillData.SkillType.Passive:
+                    script.skillTree.skillTree[selectedSkillTreeIndex].statModificationCategory = (SkillData.StatModificationCategory)EditorGUILayout.EnumPopup("Stat to be modified", script.skillTree.skillTree[selectedSkillTreeIndex].statModificationCategory);
+                    script.skillTree.skillTree[selectedSkillTreeIndex].additivePercentage = EditorGUILayout.FloatField("Percentage to be added", script.skillTree.skillTree[selectedSkillTreeIndex].additivePercentage);
+                    break;
+
+                case SkillData.SkillType.Ability:
+                    script.skillTree.skillTree[selectedSkillTreeIndex].abilityID = EditorGUILayout.IntField("Ability ID", script.skillTree.skillTree[selectedSkillTreeIndex].abilityID);
+                    break;
+            }
         }
     }
 
@@ -253,11 +261,16 @@ public class CharacterDataEditor : Editor
         EditorGUILayout.LabelField("NAME", GUILayout.MaxWidth(100), GUILayout.MaxHeight(20));
         EditorGUILayout.LabelField("PRE-REQUISITE IDS LIST");
         EditorGUILayout.EndHorizontal();
-        if (script.skillTree.skillTree.Count > 0)
+        if (script.skillTree.skillTree != null && script.skillTree.skillTree.Count > 0)
+        {
             DisplaySkillList();
+        }
         if (GUILayout.Button("Add New Skill"))
         {
-            script.skillTree.skillTree.Add(new SkillData());
+            SkillData skill = new SkillData();
+            skill.skillPrerequisites = new List<int>();
+            script.skillTree.skillTree.Add(skill);
+            Repaint();
         }
     }
 
@@ -272,7 +285,7 @@ public class CharacterDataEditor : Editor
                 script.skillTree.skillTree.Remove(script.skillTree.skillTree[i]);
             if (GUILayout.Button("◉", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
                 selectedSkillTreeIndex = i;
-            EditorGUILayout.LabelField("", GUILayout.MaxWidth(20), GUILayout.MaxHeight(20));
+            EditorGUILayout.LabelField("", GUILayout.MaxWidth(15), GUILayout.MaxHeight(20));
             if (i < script.skillTree.skillTree.Count)
             {
                 EditorGUILayout.LabelField(_buffer.skillTree[i].skillID.ToString(), GUILayout.MaxWidth(30), GUILayout.MaxHeight(20));
@@ -288,5 +301,12 @@ public class CharacterDataEditor : Editor
             }
             EditorGUILayout.EndHorizontal();
         }
+    }
+
+    private void SaveData()
+    {
+        AssetDatabase.Refresh();
+        EditorUtility.SetDirty(script);
+        AssetDatabase.SaveAssets();
     }
 }

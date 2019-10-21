@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5ea2eb181279ff4c91eb79bdaf6cbdb, type: 3}
-  m_Name: CharacterDataValues 1
+  m_Name: Character 1
   m_EditorClassIdentifier: 
   abilities:
   - abilityID: 0
-    abilityName: 
+    abilityName: Fight 1
     abilityUnlock: 0
-  - abilityID: 0
-    abilityName: 
+  - abilityID: 1
+    abilityName: Counter 1
     abilityUnlock: 0
-  - abilityID: 0
-    abilityName: 
+  - abilityID: 2
+    abilityName: Counter 2
     abilityUnlock: 0
   skillTree:
     skillTree:
@@ -31,9 +31,9 @@ MonoBehaviour:
       minimumLevel: 1
       skillPrerequisites: 
       skillType: 0
-      statModificationCategory: 0
-      abilityToBeUnlocked: 0
+      statModificationCategory: 1
       additivePercentage: 20
+      abilityID: 0
     - skillID: 1
       skillName: Damage 1
       skillDescription: Increases Damage by 5%
@@ -41,9 +41,9 @@ MonoBehaviour:
       minimumLevel: 1
       skillPrerequisites: 
       skillType: 0
-      statModificationCategory: 0
-      abilityToBeUnlocked: 0
+      statModificationCategory: 2
       additivePercentage: 5
+      abilityID: 0
     - skillID: 2
       skillName: Endurance 1
       skillDescription: Increases Endurance by 2%
@@ -51,9 +51,9 @@ MonoBehaviour:
       minimumLevel: 1
       skillPrerequisites: 
       skillType: 0
-      statModificationCategory: 0
-      abilityToBeUnlocked: 0
-      additivePercentage: 8
+      statModificationCategory: 3
+      additivePercentage: 2
+      abilityID: 0
     - skillID: 3
       skillName: Health 2
       skillDescription: Increases Health by 25%
@@ -61,29 +61,29 @@ MonoBehaviour:
       minimumLevel: 10
       skillPrerequisites: 00000000
       skillType: 0
-      statModificationCategory: 0
-      abilityToBeUnlocked: 0
+      statModificationCategory: 1
       additivePercentage: 25
+      abilityID: 0
     - skillID: 4
       skillName: Fight 1
-      skillDescription: Gain a new Power Attack Move
+      skillDescription: Unlock a new Power Move
       unlocked: 0
       minimumLevel: 10
       skillPrerequisites: 0000000001000000
       skillType: 1
       statModificationCategory: 0
-      abilityToBeUnlocked: 0
       additivePercentage: 0
+      abilityID: 0
     - skillID: 5
       skillName: Counter 1
-      skillDescription: Gain a new Dodge Counter Move
+      skillDescription: Unlock a new Dodge Counter move
       unlocked: 0
       minimumLevel: 10
       skillPrerequisites: 0100000002000000
       skillType: 1
       statModificationCategory: 0
-      abilityToBeUnlocked: 0
       additivePercentage: 0
+      abilityID: 1
     - skillID: 6
       skillName: Endurance 2
       skillDescription: Increases Endurance by 3%
@@ -91,9 +91,9 @@ MonoBehaviour:
       minimumLevel: 15
       skillPrerequisites: 02000000
       skillType: 0
-      statModificationCategory: 0
-      abilityToBeUnlocked: 0
+      statModificationCategory: 3
       additivePercentage: 3
+      abilityID: 0
     - skillID: 7
       skillName: Health 3
       skillDescription: Increases Health by 35%
@@ -101,9 +101,9 @@ MonoBehaviour:
       minimumLevel: 20
       skillPrerequisites: 0300000004000000
       skillType: 0
-      statModificationCategory: 0
-      abilityToBeUnlocked: 0
+      statModificationCategory: 1
       additivePercentage: 35
+      abilityID: 0
     - skillID: 8
       skillName: Damage 2
       skillDescription: Increases Damage by 10%
@@ -111,9 +111,9 @@ MonoBehaviour:
       minimumLevel: 20
       skillPrerequisites: 0100000004000000
       skillType: 0
-      statModificationCategory: 0
-      abilityToBeUnlocked: 0
+      statModificationCategory: 2
       additivePercentage: 10
+      abilityID: 0
     - skillID: 9
       skillName: Damage 3
       skillDescription: Increases Damage by 12%
@@ -121,19 +121,19 @@ MonoBehaviour:
       minimumLevel: 25
       skillPrerequisites: 08000000
       skillType: 0
-      statModificationCategory: 0
-      abilityToBeUnlocked: 0
+      statModificationCategory: 2
       additivePercentage: 12
+      abilityID: 0
     - skillID: 10
       skillName: Counter 2
-      skillDescription: Unlock a new Dodge Move
+      skillDescription: Slow time after Dodge
       unlocked: 0
       minimumLevel: 25
-      skillPrerequisites: 060000000800000005000000
+      skillPrerequisites: 050000000600000008000000
       skillType: 1
       statModificationCategory: 0
-      abilityToBeUnlocked: 0
       additivePercentage: 0
+      abilityID: 2
     - skillID: 11
       skillName: Endurance 3
       skillDescription: Increases Endurance by 5%
@@ -141,6 +141,6 @@ MonoBehaviour:
       minimumLevel: 30
       skillPrerequisites: 06000000
       skillType: 0
-      statModificationCategory: 0
-      abilityToBeUnlocked: 0
+      statModificationCategory: 3
       additivePercentage: 5
+      abilityID: 0

@@ -145,14 +145,6 @@ public class SkillData
         Endurance = 3,
     }
 
-    [System.Serializable]
-    public enum AbilityToBeUnlocked
-    {
-        Counter1 = 0,
-        Counter2 = 1,
-        Fight1 = 2,
-    }
-
     public int skillID; //Unique Identifier Value for skill
     public string skillName;
 
@@ -164,7 +156,6 @@ public class SkillData
     public List<int> skillPrerequisites; //List of unique Skill IDs which need to be unlocked before unlocking current skill
     public SkillType skillType;
     public StatModificationCategory statModificationCategory;
-    public AbilityToBeUnlocked abilityToBeUnlocked;
     public float additivePercentage;
     public int abilityID;
 }
@@ -255,7 +246,7 @@ public class SkillTree
 
 #endregion Declarations and Definitions
 
-[CreateAssetMenu(fileName = "Character Data Values", menuName = "ScriptableObjects/CharacterDataValues")]
+[CreateAssetMenu(fileName = "New CharacterData", menuName = "ScriptableObjects/CharacterData")]
 public class CharacterData : ScriptableObject
 {
     [SerializeField]
@@ -266,6 +257,34 @@ public class CharacterData : ScriptableObject
 
     [SerializeField]
     public SkillTree skillTree;
+
+    private void Awake()
+    {
+        Debug.Log("Awake Called");
+        if (stats == null)
+        {
+            stats = new Stats();
+            Debug.Log("Init :- Stats");
+        }
+
+        if (abilities == null)
+        {
+            abilities = new List<Ability>();
+            Debug.Log("Init :- Abilities");
+        }
+
+        if (skillTree == null)
+        {
+            skillTree = new SkillTree();
+            Debug.Log("Init :- SkillTree");
+        }
+
+        if (skillTree.skillTree == null)
+        {
+            skillTree.skillTree = new List<SkillData>();
+            Debug.Log("Init :- SkillTree Internal Data");
+        }
+    }
 
     public void UnlockSkill(int skillID)
     {
